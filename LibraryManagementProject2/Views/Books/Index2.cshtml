@@ -1,0 +1,99 @@
+﻿@model IEnumerable<LibraryManagementProject2.Models.Books>
+
+@{
+    ViewBag.Title = "Index2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index2</h2>
+
+<p>
+    
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index2", "Books", FormMethod.Post))
+{
+    <div>
+        Book Title : @Html.TextBox("bkname")
+        Author : @Html.TextBox("authname")
+
+        <input id="submit" type="submit" value="Filter" />
+        <br />
+    </div>
+
+
+}
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Title)*@
+            @Html.ActionLink("Title", "Index2", new { sortOrder = ViewBag.TitleSortParam })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SerialNumber)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Author)*@
+            @Html.ActionLink("Author", "Index2", new { sortOrder = ViewBag.AuthorParam })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </th>
+        @if (ViewBag.Auth)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </th>
+        }
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SerialNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+@if (ViewBag.Auth)
+{
+            <td>
+                @Html.DisplayFor(modelItem => item.qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAvailable)
+            </td>
+}
+            <td>
+                @if (ViewBag.Auth)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.BookId }) 
+                }
+                @Html.ActionLink("Details", "Details", new { id = item.BookId }) 
+                @if (ViewBag.Auth)
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
+                }
+            </td>
+            <td>
+                @*<input type="button" value="Accept" class="btn btn-success">*@
+                @if (item.qty > 0)
+                {
+                    @Html.ActionLink("Assign", "Create", "BorrowHistories", new { id = item.BookId,}, new { @class = "btn btn-success" })
+                }
+            </td>
+        </tr>
+    }
+
+</table>
